@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel de Administración - SHARKBLACK</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 30px;
+      color: cyan;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: #222;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    input, button {
+      padding: 8px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 8px;
+    }
+
+    input {
+      width: 30%;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid #555;
+    }
+
+    .btn {
+      background-color: crimson;
+      color: white;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .btn:hover {
+      background-color: darkred;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="img/logo-sharkblack.png" alt="logo" width="60" />
+
+    <h1>Panel de Administración</h1>
+    <button onclick="logout()" class="btn">Cerrar sesión</button>
+
+    <h2>Agregar Nuevo Producto</h2>
+    <input type="text" id="nombreProducto" placeholder="Nombre del producto" />
+    <input type="number" id="precioProducto" placeholder="Precio" />
+    <input type="file" id="imagenProducto" />
+    <button class="btn" onclick="agregarProductoAdmin()">Agregar producto</button>
+
+    <h2>Lista de Productos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaProductos"></tbody>
+    </table>
+  </div>
+
+  <script>
+
+    const user = localStorage.getItem("usuarioActivo");
+    if (user !== "admin") {
+      alert("Acceso restringido.");
+      window.location.href = "sharkblack.html";
+    }
+
+    function agregarProductoAdmin() {
+      const nombre = document.getElementById("nombreProducto").value;
+      const precio = parseFloat(document.getElementById("precioProducto").value);
+      const imagenInput = document.getElementById("imagenProducto");
+
+      if (!nombre || isNaN(precio) || !imagenInput.files.length) {
+        alert("Por favor completa todos los campos.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const imagenBase64 = reader.result;
+        const nuevoProducto = { nombre, precio, imagen: imagenBase64 };
+
+        const productos = JSON.parse(localStorage.getItem("productos")) || [];
+        productos.push(nuevoProducto);
+        localStorage.setItem("productos", JSON.stringify(productos));
+
+        mostrarProductos();
+        document.getElementById("nombreProducto").value = "";
+        document.getElementById("precioProducto").value = "";
+        document.getElementById("imagenProducto").value = "";
+      };
+
+      reader.readAsDataURL(imagenInput.files[0]);
+    }
+
+    function mostrarProductos() {
+      const productos = JSON.parse(localStorage.getItem("productos")) || [];
+      const tabla = document.getElementById("tablaProductos");
+      tabla.innerHTML = "";
+
+      productos.forEach((prod, index) => {
+        const fila = `
+          <tr>
+            <td><img src="${prod.imagen}" width="50" /></td>
+            <td>${prod.nombre}</td>
+            <td>S/ ${prod.precio}</td>
+            <td>
+              <button class="btn" onclick="eliminarProducto(${index})">Eliminar</button>
+            </td>
+          </tr>
+        `;
+        tabla.innerHTML += fila;
+      });
+    }
+
+    function eliminarProducto(index) {
+      const productos = JSON.parse(localStorage.getItem("productos")) || [];
+      productos.splice(index, 1);
+      localStorage.setItem("productos", JSON.stringify(productos));
+      mostrarProductos();
+    }
+
+    function logout() {
+      localStorage.removeItem("usuarioActivo");
+      window.location.href = "login.registro.html";
+    }
+
+    window.onload = mostrarProductos;
+    
+  </script>
+  <script src="adminfuncion.js"></script>
+</body>
+</html>
+

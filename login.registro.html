@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <img src="img/logo-sharkblack.png" alt="SHARKBLACK Logo" class="logo">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHARKBLACK - Iniciar Sesión</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <div class="fondo-login"></div>
+  <div class="login-container">
+    <h2>🎮 Inicia Sesión</h2>
+    <input type="text" id="login-user" placeholder="Usuario">
+    <input type="password" id="login-pass" placeholder="Contraseña">
+    <button onclick="login()">Entrar</button>
+
+    <h3>¿Nuevo aquí?</h3>
+    <input type="text" id="register-user" placeholder="Nuevo usuario">
+    <input type="password" id="register-pass" placeholder="Nueva contraseña">
+    <button onclick="registrar()">Registrarse</button>
+
+    <p id="mensaje" style="color: red;"></p>
+  </div>
+
+  <script src="validacion.js"></script>
+</body>
+</html>

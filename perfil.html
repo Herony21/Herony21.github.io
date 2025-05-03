@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil</title>
+  <style>
+    body {
+      background-color: #111;
+      font-family: Arial;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .perfil-container {
+      background-color: #222;
+      padding: 25px 40px;
+      border-radius: 12px;
+      text-align: left;
+      width: 400px;
+    }
+    .perfil-container h2 {
+      color: cyan;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: crimson;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: rgb(200, 0, 50);
+    }
+  </style>
+</head>
+<body>
+  <div class="perfil-container">
+    <h2>👤 Mi Perfil</h2>
+    <label for="nombre">Nombre completo:</label>
+    <input type="text" id="nombre" />
+    
+    <label for="correo">Correo electrónico:</label>
+    <input type="email" id="correo" />
+    
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" />
+    
+    <label for="direccion">Dirección de envío:</label>
+    <input type="text" id="direccion" />
+    
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" />
+    
+    <label for="nacimiento">Fecha de nacimiento:</label>
+    <input type="date" id="nacimiento" />
+
+    <button onclick="guardarPerfil()">Guardar</button>
+    <a href="sharkblack.html" class="btn-volver">← Volver a la Tienda</a>
+  </div>
+  <script>
+    window.onload = () => {
+      const datos = JSON.parse(localStorage.getItem('perfilUsuario')) || {};
+      document.getElementById('nombre').value = datos.nombre || '';
+      document.getElementById('correo').value = datos.correo || '';
+      document.getElementById('rol').value = datos.rol || '';
+      document.getElementById('fecha').value = datos.fecha || '';
+    };
+
+    function guardarPerfil() {
+      const perfil = {
+        nombre: document.getElementById('nombre').value,
+        correo: document.getElementById('correo').value,
+        rol: document.getElementById('rol').value,
+        fecha: document.getElementById('fecha').value,
+      };
+      localStorage.setItem('perfilUsuario', JSON.stringify(perfil));
+      alert("✅ Perfil guardado correctamente.");
+    }
+  </script>
+</body>
+</html>
